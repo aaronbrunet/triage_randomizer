@@ -9,7 +9,7 @@
   c.include_alain = false;
   //c.data.result_list = [];
   c.data.loading = false;
-
+c.data.toggle_pool = false;
 c.exclude_list = [];
 c.exclude_list_ids = [];
 c.exclude_list_ids_str = '';
@@ -75,6 +75,10 @@ $scope.rotateSlice = function(targetIdx){
 		var klass = 'rotate('+targetDeg+'deg)';
 		w.style.transform = klass;		
 	});
+}
+
+$scope.togglePool = function(){
+	c.data.toggle_pool = !c.data.toggle_pool;
 }
 
 //adding or removing items from pool
@@ -273,6 +277,13 @@ $scope.getRand = function(){
     align-items: center;&#13;
 	transition: 1s ease-out;&#13;
 }&#13;
+.wheel_center {&#13;
+	width: 5rem;&#13;
+  height: 5rem;&#13;
+  border-radius: 100%;&#13;
+  background-color: green;&#13;
+  position: absolute;&#13;
+}&#13;
 .slices {&#13;
   width: 40rem;&#13;
   height: 40rem;&#13;
@@ -418,14 +429,14 @@ data.result_list = rsi.getRunHistory(5);
         <sys_created_by>aaron.brunet@snc</sys_created_by>
         <sys_created_on>2024-02-13 19:03:09</sys_created_on>
         <sys_id>126e349e87184a106e4b11f83cbb3504</sys_id>
-        <sys_mod_count>302</sys_mod_count>
+        <sys_mod_count>307</sys_mod_count>
         <sys_name>Randomizer</sys_name>
         <sys_package display_value="Randomizer" source="x_snc_randomizer">1e13345687184a106e4b11f83cbb358d</sys_package>
         <sys_policy/>
         <sys_scope display_value="Randomizer">1e13345687184a106e4b11f83cbb358d</sys_scope>
         <sys_update_name>sp_widget_126e349e87184a106e4b11f83cbb3504</sys_update_name>
         <sys_updated_by>aaron.brunet</sys_updated_by>
-        <sys_updated_on>2024-02-27 04:12:13</sys_updated_on>
+        <sys_updated_on>2024-02-27 04:22:37</sys_updated_on>
         <template><![CDATA[<div class="body">
   
   <div class="card">
@@ -436,8 +447,8 @@ data.result_list = rsi.getRunHistory(5);
     <h3>Last Picked: <b>{{data.last_picked.name}}</b></h3>
 
   <div class="pool">
-    <h3>Pool</h3>
-    <ul>
+    <h3>Pool <button ng-click="togglePool()">{{c.data.toggle_pool == true ? '-' : '+'}}</button></h3>
+    <ul ng-if="c.data.toggle_pool">
       <li ng-repeat="p in data.pool" class="{{c.exclude_list_ids.includes(p.sys_id) ? 'deselect' : ''}}">
 		<button ng-click="toggleExclude(p)">[{{c.exclude_list_ids.includes(p.sys_id) ? '+' : 'x'}}]</button> 
 		{{p.name}}
@@ -463,10 +474,11 @@ data.result_list = rsi.getRunHistory(5);
       	
     <div id="pointer" class="pointer"></div>
       <div id="wheelhouse" class="wheelhouse">
-        <div id="wheel_center" class="wheel_center">
-          <div ng-repeat="l in c.data.pool">spoke</div>
-        </div>
+        
         <div id="wheel" class="wheel">
+          <div id="wheel_center" class="wheel_center">
+            <div ng-repeat="l in c.data.pool">spoke</div>
+          </div>
           <div id="slices" class="slices">
            <!-- <div ng-repeat="s in c.include_list track by $index" id="slice-{{$index}}" class="r-slice">{{s.name}}</div>-->
              <div ng-repeat="s in c.data.pool track by $index" id="slice-{{$index}}" class="r-slice">{{s.name}}</div>
