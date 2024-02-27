@@ -3,6 +3,7 @@
         <category>custom</category>
         <client_script><![CDATA[api.controller=function($scope,spUtil,$window,$timeout) {
   /* widget controller */
+//define
   var c = this;
   c.include_last_picked = false;
   c.include_alain = false;
@@ -25,9 +26,12 @@ resetVars = function(){
 	last_picked = c.data.pool.find(e => e.last_picked == true);
 }
 
+//calculate and set rotation of all items on wheel
 calcSlice = function(){	
 	var slice_arr = $window.document.querySelectorAll('.r-slice');
 	// if(slice_arr.length < 0 || slice_arr.length < c.include_list.length){
+
+	//sometimes it runs before the HTML is done being built, so just give it a sec	
 	if(slice_arr.length < 0 || slice_arr.length < c.data.pool.length){
 		console.log("Let's try again");
 		$timeout(function(){ 
@@ -38,14 +42,14 @@ calcSlice = function(){
 
 	var slice_size = 360/c.data.pool.length;//360/slice_arr.length;
 
-	
 	//console.log(slice_arr);
+	//loop through the elements and set rotational degree - show all pool items, as dynamically removing means nothing to point to later
 	for(var i = 0; i<slice_arr.length; i++){
 		//console.log(slice_arr[i]);
 		var s_num = i * slice_size;
 		var s = document.getElementById(slice_arr[i].id);
 		// console.log(s);
-		var css_deg = 'rotate('+s_num+'deg) translateX(5rem)';
+		var css_deg = 'rotate('+s_num+'deg) translateX(10rem)';
 		slice_arr[i].style.transform = css_deg; 
 		
 		// console.log(css_deg);
@@ -53,37 +57,30 @@ calcSlice = function(){
 	//console.log(slice_arr);
 }
 
+//when the wheel needs to be rotated to a specific spot
 $scope.rotateSlice = function(targetIdx){
-	console.log('targetIdx: '+targetIdx);
 	var w = $window.document.getElementById("wheel");
-	console.log(w);
 	w.style.transform = 'rotate(0deg)';
-	//w.style.transition = "0s";
-	
+	//start spin that goes for 3s
 	w.classList.add('spin');
-	console.log('added spin class');
-	// w.style.transition = "3s ease-out 2s";	
-	console.log('added transition timing');
 	$timeout(function(){ 
-			console.log('waiting');
-	
+		console.log('waiting');
+		//wait a hair over 3s for the animation to end
 	}, 3050).then(function(e){
 		w.classList.remove('spin');
+		//calculate target
 		var slices = c.data.pool.length;
 		var deg = 360/slices;
 		var targetDeg = 360 - (deg * targetIdx);
-		//c.targetDeg +=targetDeg;
-		console.log([slices,deg,targetDeg]);
-
 		var klass = 'rotate('+targetDeg+'deg)';
-		console.log(klass);
-		console.log('adding target');
-		w.style.transform = klass;
-		
+		w.style.transform = klass;		
 	});
 }
 
+//adding or removing items from pool
 $scope.toggleExclude = function(data){
+
+	//build exclude list
 	if(c.exclude_list.some(e => e.sys_id == data.sys_id)){
 		var tmp_arr = c.exclude_list.filter(e => e.sys_id != data.sys_id);	
 		c.exclude_list = tmp_arr.slice();
@@ -92,16 +89,26 @@ $scope.toggleExclude = function(data){
 	}
 	
 	if(data == alain){
+		//toggle alain switch
 		c.include_alain = !c.include_alain;
 	}
 	if(data.last_picked == true){
+		//toggle picked switch
 		c.include_last_picked = !c.include_last_picked;
 	}
+	//sys_ids used for easier querying
 	c.exclude_list_ids = c.exclude_list.map(p => p.sys_id);
+
+	//easier than bass ackwards
 	c.include_list = c.data.pool.filter(e => !c.exclude_list_ids.includes(e.sys_id));
+	//build enc query
 	c.exclude_list_ids_str = 'sys_idNOT IN'+c.exclude_list_ids.join();
+	
+	//this probably doesn't need to be here anymore 
 	calcSlice();
 }
+
+
 $scope.toggleAlain = function(){
 	if(c.include_alain){
 		var tmp_arr = c.exclude_list.filter(e => e.sys_id !== alain.sys_id);
@@ -288,7 +295,7 @@ $scope.getRand = function(){
   width: 20rem;&#13;
   max-width: 20rem;&#13;
   color: black;&#13;
-  text-align: right;&#13;
+  text-align: center;&#13;
   &#13;
   font-weight: bold;&#13;
 }&#13;
@@ -411,14 +418,14 @@ data.result_list = rsi.getRunHistory(5);
         <sys_created_by>aaron.brunet@snc</sys_created_by>
         <sys_created_on>2024-02-13 19:03:09</sys_created_on>
         <sys_id>126e349e87184a106e4b11f83cbb3504</sys_id>
-        <sys_mod_count>301</sys_mod_count>
+        <sys_mod_count>302</sys_mod_count>
         <sys_name>Randomizer</sys_name>
         <sys_package display_value="Randomizer" source="x_snc_randomizer">1e13345687184a106e4b11f83cbb358d</sys_package>
         <sys_policy/>
         <sys_scope display_value="Randomizer">1e13345687184a106e4b11f83cbb358d</sys_scope>
         <sys_update_name>sp_widget_126e349e87184a106e4b11f83cbb3504</sys_update_name>
         <sys_updated_by>aaron.brunet</sys_updated_by>
-        <sys_updated_on>2024-02-27 03:58:48</sys_updated_on>
+        <sys_updated_on>2024-02-27 04:12:13</sys_updated_on>
         <template><![CDATA[<div class="body">
   
   <div class="card">
@@ -456,13 +463,15 @@ data.result_list = rsi.getRunHistory(5);
       	
     <div id="pointer" class="pointer"></div>
       <div id="wheelhouse" class="wheelhouse">
-        
-      <div id="wheel" class="wheel">
-        <div id="slices" class="slices">
-         <!-- <div ng-repeat="s in c.include_list track by $index" id="slice-{{$index}}" class="r-slice">{{s.name}}</div>-->
-           <div ng-repeat="s in c.data.pool track by $index" id="slice-{{$index}}" class="r-slice">{{s.name}}</div>
+        <div id="wheel_center" class="wheel_center">
+          <div ng-repeat="l in c.data.pool">spoke</div>
         </div>
-      </div>
+        <div id="wheel" class="wheel">
+          <div id="slices" class="slices">
+           <!-- <div ng-repeat="s in c.include_list track by $index" id="slice-{{$index}}" class="r-slice">{{s.name}}</div>-->
+             <div ng-repeat="s in c.data.pool track by $index" id="slice-{{$index}}" class="r-slice">{{s.name}}</div>
+          </div>
+        </div>
     </div>
     <div class="results">
         <h2 ng-if="c.data.loading == true || !data.result || data.result.name == ''">Waiting to pick victim...</h2>
