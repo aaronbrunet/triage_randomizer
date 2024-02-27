@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="6763785687184a106e4b11f83cbb3562" label="Runs" max_length="40" name="x_snc_randomizer_runs" type="collection">
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Result" max_length="32" name="result" reference="x_snc_randomizer_pool" type="reference"/>
+    </element>
+</database>

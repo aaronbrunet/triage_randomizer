@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_number">
+    <sys_number action="INSERT_OR_UPDATE">
+        <category display_value="" name="x_snc_randomizer_runs">x_snc_randomizer_runs</category>
+        <maximum_digits>7</maximum_digits>
+        <number>1000</number>
+        <prefix>RUN</prefix>
+        <sys_class_name>sys_number</sys_class_name>
+        <sys_created_by>aaron.brunet@snc</sys_created_by>
+        <sys_created_on>2024-02-13 18:14:26</sys_created_on>
+        <sys_id>3b63785687184a106e4b11f83cbb357f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RUN</sys_name>
+        <sys_package display_value="Randomizer" source="x_snc_randomizer">1e13345687184a106e4b11f83cbb358d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Randomizer">1e13345687184a106e4b11f83cbb358d</sys_scope>
+        <sys_update_name>sys_number_3b63785687184a106e4b11f83cbb357f</sys_update_name>
+        <sys_updated_by>aaron.brunet@snc</sys_updated_by>
+        <sys_updated_on>2024-02-13 18:14:26</sys_updated_on>
+    </sys_number>
+</record_update>

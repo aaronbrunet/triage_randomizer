@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="3239fc5a87184a106e4b11f83cbb35b8" label="Pool" max_length="40" name="x_snc_randomizer_pool" type="collection">
+        <element label="Last Picked" max_length="255" name="last_picked" type="boolean"/>
+        <element label="Last Picked Date" max_length="40" name="last_picked_date" type="glide_date_time"/>
+        <element display="true" label="Name" max_length="5000" name="name" type="string"/>
+        <element label="Value" max_length="40" name="value" type="string"/>
+        <element label="Weight" max_length="40" name="weight" type="integer"/>
+    </element>
+</database>
