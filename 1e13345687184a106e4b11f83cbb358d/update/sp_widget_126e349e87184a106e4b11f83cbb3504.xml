@@ -42,7 +42,6 @@ calcSlice = function(){
 
 	var slice_size = 360/c.data.pool.length;//360/slice_arr.length;
 
-	//console.log(slice_arr);
 	//loop through the elements and set rotational degree - show all pool items, as dynamically removing means nothing to point to later
 	for(var i = 0; i<slice_arr.length; i++){
 		//console.log(slice_arr[i]);
@@ -51,8 +50,7 @@ calcSlice = function(){
 		// console.log(s);
 		var css_deg = 'rotate('+s_num+'deg) translateX(10rem)';
 		slice_arr[i].style.transform = css_deg; 
-		
-		// console.log(css_deg);
+
 	}
 	//console.log(slice_arr);
 }
@@ -244,13 +242,38 @@ $scope.getRand = function(){
 }&#13;
 &#13;
 .pool {&#13;
-&#13;
+	position: relative;&#13;
+  width: 70%;&#13;
+  margin: auto;&#13;
+  &#13;
+  button h3 {&#13;
+  	margin: 1rem;&#13;
+  }&#13;
+  &#13;
+}&#13;
+.pool-popup {&#13;
+	border-radius: 2rem;&#13;
+	box-shadow: 0 0.2rem 1rem 0 rgba(0, 0, 0, .1);&#13;
+    padding: 2rem;&#13;
+    z-index: 99;&#13;
+    display: block;&#13;
+    position: absolute;&#13;
+    background-color: white;&#13;
+    width: 100%;&#13;
+  &#13;
+  ul {&#13;
+  	width: 80%;&#13;
+      li button {&#13;
+      	margin: 0.2rem 0.5rem;&#13;
+      }&#13;
+  	}&#13;
+  &#13;
 }&#13;
 .pointer {&#13;
 	width: 5rem;&#13;
   height: 5rem;&#13;
   border-radius: 50% 50% 50% 0;&#13;
-  background-color: blue;&#13;
+  background-color: green;&#13;
   &#13;
   z-index: 9;&#13;
     display: block;&#13;
@@ -268,9 +291,10 @@ $scope.getRand = function(){
     justify-content: center;&#13;
 }&#13;
 .wheel {&#13;
-  	background: red;&#13;
+  	background: white;&#13;
   	width: 40rem;&#13;
   	height: 40rem;&#13;
+	border: 2px solid black;&#13;
     border-radius: 100%;&#13;
   	display: flex;&#13;
     justify-content: center;&#13;
@@ -283,7 +307,22 @@ $scope.getRand = function(){
   border-radius: 100%;&#13;
   background-color: green;&#13;
   position: absolute;&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+    justify-content: center;&#13;
+  z-index: 9;&#13;
+  &#13;
+  i {&#13;
+  	color: white;&#13;
+    font-size: 3rem;&#13;
+  }&#13;
 }&#13;
+.spoke {&#13;
+	height: 1rem;&#13;
+  	width: 20rem;&#13;
+	background-color: black;&#13;
+}&#13;
+&#13;
 .slices {&#13;
   width: 40rem;&#13;
   height: 40rem;&#13;
@@ -307,8 +346,8 @@ $scope.getRand = function(){
   max-width: 20rem;&#13;
   color: black;&#13;
   text-align: center;&#13;
-  &#13;
   font-weight: bold;&#13;
+  background-color: white;&#13;
 }&#13;
 &#13;
 ul, li {&#13;
@@ -335,6 +374,13 @@ button {&#13;
   padding: .5rem;&#13;
   */&#13;
   margin: 0 1rem;&#13;
+}&#13;
+&#13;
+.btn-primary {&#13;
+	background-color: green;&#13;
+}&#13;
+.btn-warning {&#13;
+	background-color: red;&#13;
 }&#13;
 &#13;
 .block {&#13;
@@ -429,47 +475,45 @@ data.result_list = rsi.getRunHistory(5);
         <sys_created_by>aaron.brunet@snc</sys_created_by>
         <sys_created_on>2024-02-13 19:03:09</sys_created_on>
         <sys_id>126e349e87184a106e4b11f83cbb3504</sys_id>
-        <sys_mod_count>307</sys_mod_count>
+        <sys_mod_count>343</sys_mod_count>
         <sys_name>Randomizer</sys_name>
         <sys_package display_value="Randomizer" source="x_snc_randomizer">1e13345687184a106e4b11f83cbb358d</sys_package>
         <sys_policy/>
         <sys_scope display_value="Randomizer">1e13345687184a106e4b11f83cbb358d</sys_scope>
         <sys_update_name>sp_widget_126e349e87184a106e4b11f83cbb3504</sys_update_name>
         <sys_updated_by>aaron.brunet</sys_updated_by>
-        <sys_updated_on>2024-02-27 04:22:37</sys_updated_on>
-        <template><![CDATA[<div class="body">
+        <sys_updated_on>2024-02-27 15:51:42</sys_updated_on>
+        <template><![CDATA[<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="body">
   
   <div class="card">
     <div class="title">
-    	<h1>Triage Roulette</h1>
+    	<h1>RTB Triage Roulette</h1>
   	</div>
     
-    <h3>Last Picked: <b>{{data.last_picked.name}}</b></h3>
 
-  <div class="pool">
-    <h3>Pool <button ng-click="togglePool()">{{c.data.toggle_pool == true ? '-' : '+'}}</button></h3>
-    <ul ng-if="c.data.toggle_pool">
-      <li ng-repeat="p in data.pool" class="{{c.exclude_list_ids.includes(p.sys_id) ? 'deselect' : ''}}">
-		<button ng-click="toggleExclude(p)">[{{c.exclude_list_ids.includes(p.sys_id) ? '+' : 'x'}}]</button> 
-		{{p.name}}
-        <span ng-if="p.last_picked == true">(Last Picked)</span>
-	  </li>
-    </ul>
+
+  
+	<div class="pool">
+    <button ng-click="togglePool()" class="btn btn-primary"><h3>Pool <i class="fa-solid fa-users{{c.data.toggle_pool == true ? '-slash' : ''}}"></i></h3></button>
+    <div class="pool-popup" ng-if="c.data.toggle_pool">
+      <ul>
+        <li ng-repeat="p in data.pool" class="{{c.exclude_list_ids.includes(p.sys_id) ? 'deselect' : ''}}">
+          <button ng-click="toggleExclude(p)" class="btn btn-{{c.exclude_list_ids.includes(p.sys_id) ? 'warning' : 'primary'}}"><i class="fa-solid fa-user{{c.exclude_list_ids.includes(p.sys_id) ? '-large-slash' : '-check'}}"></i></button> 
+          {{p.name}}
+          <span ng-if="p.name == 'Alain Phalip'"><i class="fa-solid fa-star"></i></span>
+          <span ng-if="p.last_picked == true"><i class="fa-solid fa-clock-rotate-left"></i> Last Picked</span>
+        </li>
+      </ul>
+    </div>
   </div>
-	
-<!--
-  <div ng-if="data.exclude_list.length > 0">
-    <h3>Exclude List</h3>
-    <ul>
-      <li ng-repeat="e in data.exclude_list"><button ng-click="">[+]</button> {{e.name}}</li>
-    </ul>
-  </div>-->
     <div class="controls">
+      
       <div class="block">
         <input type="checkbox" ng_model="c.include_alain" ng-click="toggleAlain()"/> Include Alain?
         <!--<input type="checkbox" ng_model="c.include_last_picked" ng-click="toggleLastPicked()"/> Include last picked?-->
       </div>
-        <button ng-click="getResult()" class="btn btn-primary">{{data.button_text}}</button><button ng-click="getResultLucky()" class="btn btn-secondary">I'm Feeling Lucky</button>
+        <button ng-click="getResult()" class="btn btn-primary" ng-disabled="c.exclude_list.length == data.pool.length">{{data.button_text}}</button><button ng-click="getResultLucky()" class="btn btn-secondary">I'm Feeling Lucky</button>
       </div>
       	
     <div id="pointer" class="pointer"></div>
@@ -477,25 +521,34 @@ data.result_list = rsi.getRunHistory(5);
         
         <div id="wheel" class="wheel">
           <div id="wheel_center" class="wheel_center">
-            <div ng-repeat="l in c.data.pool">spoke</div>
+            <i class="fa-solid fa-certificate"></i>
+<!--
+            <div ng-repeat="l in c.data.pool">
+              <div class='left-spoke spoke'></div>
+              <div class='right-spoke spoke'></div>
+            </div>
+-->
           </div>
           <div id="slices" class="slices">
            <!-- <div ng-repeat="s in c.include_list track by $index" id="slice-{{$index}}" class="r-slice">{{s.name}}</div>-->
-             <div ng-repeat="s in c.data.pool track by $index" id="slice-{{$index}}" class="r-slice">{{s.name}}</div>
+             <div ng-repeat="s in c.data.pool track by $index" id="slice-{{$index}}" class="r-slice"><span>{{s.name}}</span></div>
           </div>
         </div>
     </div>
     <div class="results">
+        <h3>Last Picked: <b>{{data.last_picked.name}}</b></h3>
         <h2 ng-if="c.data.loading == true || !data.result || data.result.name == ''">Waiting to pick victim...</h2>
         <h2 ng-if="c.data.loading == false && data.result && data.result.name != ''">Today's Victim: <b>{{data.result.name}}</b></h2>
       </div>
   </div>
   <div ng-if="data.result_list.length > 0" class='card'>
     <h3>History</h3>
-    <ul>
-      <!-- <li ng-repeat="r in data.result_list"><h4>{{r.result}} ]]>🕰<![CDATA[️<sn-time-ago timestamp="::r.time"></sn-time-ago></h4></li> -->
-      <li ng-repeat="r in data.result_list"><h4>{{r.result}} ]]>🕰<![CDATA[️ {{r.time}}</h4></li> 
-    </ul>
+    <table>
+      <tr ng-repeat="r in data.result_list">
+        <td>{{r.result}}</td>
+        <td><i class="fa-solid fa-clock"></i> {{r.time}}</td>
+      </tr>
+    </table>
   </div>
 </div>]]></template>
     </sp_widget>
